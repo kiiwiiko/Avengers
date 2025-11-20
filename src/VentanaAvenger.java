@@ -59,11 +59,10 @@ public class VentanaAvenger {
                         if(avengers.buscarId(avengers.getAvengers(), id) == null) {
                             avengers.setAvengers(id, nombre, misionAsignada, nivel, pagoMensual);
                             agregarArea.setText(avengers.getAvengers().toString());
+                            borrarDatos();
                         } else {
                             JOptionPane.showMessageDialog(null, "El avenger ya existe");
                         }
-
-                        borrarDatos();
                     }
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Ingrese correctamente los parametros.", "Error", JOptionPane.ERROR_MESSAGE);
