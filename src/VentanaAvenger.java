@@ -56,9 +56,9 @@ public class VentanaAvenger {
                         String misionAsignada = misionCombo.getSelectedItem().toString();
                         double pagoMensual = Double.parseDouble(sueldoField.getText());
 
-                        if(avengers.buscarId(avengers.getAvengers(), id) == null) {
+                        if(avengers.buscarId(id) == null) {
                             avengers.setAvengers(id, nombre, misionAsignada, nivel, pagoMensual);
-                            agregarArea.setText(avengers.getAvengers().toString());
+                            agregarArea.setText(avengers.mostrarAvengers());
                             borrarDatos();
                         } else {
                             JOptionPane.showMessageDialog(null, "El avenger ya existe");
@@ -77,7 +77,7 @@ public class VentanaAvenger {
                     if (e.getSource() == buscarButton) {
                         int id = Integer.parseInt(idBuscarField.getText());
 
-                        aBuscado = avengers.buscarId(avengers.getAvengers(), id);
+                        aBuscado = avengers.buscarId(id);
                         idBuscarField.setText("");
 
                         buscarArea.setText(aBuscado.toString());

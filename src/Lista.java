@@ -16,11 +16,20 @@ public class Lista {
 
     public void setAvengers(int id, String nombre, String misionAsignada, int nivelPeligro, double pagoMensual) {
         avengers.add(new Avenger(id, nombre, misionAsignada, nivelPeligro, pagoMensual));
-        Collections.sort(avengers);
     }
 
-    public Avenger buscarId(List<Avenger> avengers, int id) {
+    public String mostrarAvengers() {
+        StringBuilder sb = new StringBuilder();
+        for (Avenger avenger : avengers) {
+            sb.append(avenger.toString());
+        }
+        return sb.toString();
+    }
+
+    public Avenger buscarId(int id) {
         Avenger resultado = null;
+
+        Collections.sort(avengers);
 
         if(avengers.isEmpty()) {
             return null;
