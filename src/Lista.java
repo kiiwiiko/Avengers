@@ -15,6 +15,10 @@ public class Lista {
         avengers.add(new Avenger(nombre, misionAsignada, nivelPeligro, pagoMensual));
     }
 
+    public List<Avenger> getAvengers() {
+        return avengers;
+    }
+
     //Contructor String para que se vea mejor la lista en pantalla
     public String mostrarAvengers() {
         StringBuilder sb = new StringBuilder();
@@ -27,9 +31,6 @@ public class Lista {
     //Busqueda binaria por el id
     public Avenger buscarId(int id) {
         Avenger resultado = null;
-
-        //Aqui no agregamos el Collections porq se ordenan de manera automatica por id
-        //por el compareTo
 
         if(avengers.isEmpty()) {
             return null;
@@ -44,6 +45,8 @@ public class Lista {
             if(a.getId() == id) {
                 resultado = a;
             }
+
+            //Actualizar intervalo
             if(a.getId() < id) {
                 left = mid + 1;
             } else {
@@ -63,8 +66,4 @@ public class Lista {
         a.setPagoNetoRecibe(pagoMensual, a.getImpuestoGobierno(), a.getAporteFondoHeroes());
         return a;
     }
-
-
-
-
 }

@@ -287,9 +287,9 @@
                 <properties>
                   <model>
                     <item value=""/>
-                    <item value="1"/>
-                    <item value="2"/>
-                    <item value="3"/>
+                    <item value="Mision 1"/>
+                    <item value="Mision 2"/>
+                    <item value="Mision 3"/>
                   </model>
                 </properties>
               </component>

@@ -72,8 +72,6 @@ public class VentanaAvenger {
             public void actionPerformed(ActionEvent e) {
                 try {
                     if (e.getSource() == buscarButton) {
-
-                        if(idBuscarField.getText().equals("")) {
                             //Tomamos el id
                             int id = Integer.parseInt(idBuscarField.getText());
 
@@ -83,20 +81,23 @@ public class VentanaAvenger {
                             //Se borra el campo al encotrar el Avenger
                             idBuscarField.setText("");
 
-                            //Para ubicar los datos en el panel de modificar asi se ve mejor al momento de cabiar panel
-                            //Es mas intuitivo y rapido para el usuario
-                            idModLabel.setText(String.valueOf(aBuscado.getId()));
-                            nombreModLabel.setText(aBuscado.getNombre());
-                            misionModCombo.setSelectedItem(aBuscado.getMisionAsignada());
-                            nivelModCombo.setSelectedItem(String.valueOf(aBuscado.getNivelPeligro()));
-                            sueldoModField.setText(String.valueOf(aBuscado.getPagoMensual()));
+                            for(Avenger a : avengers.getAvengers()) {
+                                if (a.getId() == id) {
+                                    //Para ubicar los datos en el panel de modificar asi se ve mejor al momento de cabiar panel
+                                    //Es mas intuitivo y rapido para el usuario
+                                    idModLabel.setText(String.valueOf(aBuscado.getId()));
+                                    nombreModLabel.setText(aBuscado.getNombre());
+                                    misionModCombo.setSelectedItem(aBuscado.getMisionAsignada());
+                                    nivelModCombo.setSelectedItem(String.valueOf(aBuscado.getNivelPeligro()));
+                                    sueldoModField.setText(String.valueOf(aBuscado.getPagoMensual()));
 
-                            //Imprimer los datos del Avenger que fue encontrado
-                            buscarArea.setText(aBuscado.toString());
-                            informeArea.setText(aBuscado.mostrarInforme());
-                        } else {
-                            JOptionPane.showMessageDialog(null, "El Avenger buscado no existe", "Error", JOptionPane.ERROR_MESSAGE);
-                        }
+                                    //Imprimer los datos del Avenger que fue encontrado
+                                    buscarArea.setText(aBuscado.toString());
+                                    informeArea.setText(aBuscado.mostrarInforme());
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "El avenger " + id + " no existe.", "Error", JOptionPane.ERROR_MESSAGE);
+                                }
+                            }
                     }
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Ingrese correctamente los parametros.", "Error", JOptionPane.ERROR_MESSAGE);
