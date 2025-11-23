@@ -11,14 +11,11 @@ public class VentanaAvenger {
     private JTextArea agregarArea;
     private JComboBox nivelCombo;
     private JComboBox misionCombo;
-    private JTextField idField;
     private JTextField nombreField;
     private JLabel sueldoLabel;
-    private JButton actualizarButton;
     private JLabel misionLabel;
     private JLabel nivelLabel;
     private JTextField sueldoMod;
-    private JLabel idLabel;
     private JLabel nombreLabel;
     private JTextField idBuscarField;
     private JButton buscarButton;
@@ -38,6 +35,7 @@ public class VentanaAvenger {
     private JLabel idModLabel;
     private JLabel nombreModLabel;
     private JPanel modificarPanel;
+    private JTextArea informeArea;
 
     Lista avengers = new Lista();
 
@@ -50,19 +48,18 @@ public class VentanaAvenger {
             public void actionPerformed(ActionEvent e) {
                 try {
                     if (e.getSource() == agregarButton) {
-                        int id = Integer.parseInt(idField.getText());
+
+                        //Tomamos los datos de los textField
                         String nombre = nombreField.getText();
                         int nivel = Integer.parseInt(nivelCombo.getSelectedItem().toString());
                         String misionAsignada = misionCombo.getSelectedItem().toString();
                         double pagoMensual = Double.parseDouble(sueldoField.getText());
 
-                        if(avengers.buscarId(id) == null) {
-                            avengers.setAvengers(id, nombre, misionAsignada, nivel, pagoMensual);
-                            agregarArea.setText(avengers.mostrarAvengers());
-                            borrarDatos();
-                        } else {
-                            JOptionPane.showMessageDialog(null, "El avenger ya existe");
-                        }
+                        //Agregamos el Avenger con los parametros ingresados
+                        avengers.agregarAvengers(nombre, misionAsignada, nivel, pagoMensual);
+                        //Mostramos cada avnger ingresado de manera ordenada
+                        agregarArea.setText(avengers.mostrarAvengers());
+                        borrarDatos();
                     }
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Ingrese correctamente los parametros.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -75,17 +72,31 @@ public class VentanaAvenger {
             public void actionPerformed(ActionEvent e) {
                 try {
                     if (e.getSource() == buscarButton) {
-                        int id = Integer.parseInt(idBuscarField.getText());
 
-                        aBuscado = avengers.buscarId(id);
-                        idBuscarField.setText("");
+                        if(idBuscarField.getText().equals("")) {
+                            //Tomamos el id
+                            int id = Integer.parseInt(idBuscarField.getText());
 
-                        buscarArea.setText(aBuscado.toString());
-                        idModLabel.setText(String.valueOf(aBuscado.getId()));
-                        nombreModLabel.setText(aBuscado.getNombre());
-                        misionModCombo.setSelectedItem(aBuscado.getMisionAsignada());
-                        nivelModCombo.setSelectedItem(String.valueOf(aBuscado.getNivelPeligro()));
-                        sueldoModField.setText(String.valueOf(aBuscado.getPagoMensual()));
+                            //Usamos la funcion para buscar el Avenger
+                            aBuscado = avengers.buscarId(id);
+
+                            //Se borra el campo al encotrar el Avenger
+                            idBuscarField.setText("");
+
+                            //Para ubicar los datos en el panel de modificar asi se ve mejor al momento de cabiar panel
+                            //Es mas intuitivo y rapido para el usuario
+                            idModLabel.setText(String.valueOf(aBuscado.getId()));
+                            nombreModLabel.setText(aBuscado.getNombre());
+                            misionModCombo.setSelectedItem(aBuscado.getMisionAsignada());
+                            nivelModCombo.setSelectedItem(String.valueOf(aBuscado.getNivelPeligro()));
+                            sueldoModField.setText(String.valueOf(aBuscado.getPagoMensual()));
+
+                            //Imprimer los datos del Avenger que fue encontrado
+                            buscarArea.setText(aBuscado.toString());
+                            informeArea.setText(aBuscado.mostrarInforme());
+                        } else {
+                            JOptionPane.showMessageDialog(null, "El Avenger buscado no existe", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Ingrese correctamente los parametros.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -99,12 +110,19 @@ public class VentanaAvenger {
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == modificarButton) {
                     try {
+                        //Obtengo cada parametro de el Avenger que voy a modificar
                         String mision = misionModCombo.getSelectedItem().toString();
                         int nivel = Integer.parseInt(nivelModCombo.getSelectedItem().toString());
                         double pagoMensual = Double.parseDouble(sueldoModField.getText());
 
+                        //Dato resultado tipo Avenger para guardar la funcion modificar datos
                         Avenger resultado = avengers.modificarDatos(aBuscado, mision, nivel, pagoMensual);
-                        modificarArea.setText(resultado.toString());
+
+                        //Actualiza los textArea de cada panel
+                        modificarArea.setText("  Avenger Modificado\n\n" + resultado.toString() + aBuscado.mostrarInforme());
+                        agregarArea.setText(avengers.mostrarAvengers());
+                        informeArea.setText(aBuscado.mostrarInforme());
+
                     } catch (NumberFormatException ex) {
                         JOptionPane.showMessageDialog(null, "Ingrese correctamente los parametros.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
@@ -113,22 +131,14 @@ public class VentanaAvenger {
         });
 
 
-        actualizarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == actualizarButton) {
-                    agregarArea.setText(avengers.getAvengers().toString());
-                }
-            }
-        });
     }
 
+    //Solo la ocupo una vez pero es para borrar los campos de ingresar
     public void borrarDatos() {
         nombreField.setText("");
         misionCombo.setSelectedIndex(0);
         nivelCombo.setSelectedIndex(0);
         sueldoField.setText("");
-        idField.setText("");
     }
 
     public static void main(String[] args) {

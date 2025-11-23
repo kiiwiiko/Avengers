@@ -1,23 +1,21 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Lista {
 
     private List<Avenger> avengers = new ArrayList<>();
 
+    //Se inicializa la lista en el constructor
     public Lista() {
         avengers = new ArrayList<>();
     }
 
-    public List<Avenger> getAvengers() {
-        return avengers;
+    //Se añade cada dato a la lista
+    public void agregarAvengers(String nombre, String misionAsignada, int nivelPeligro, double pagoMensual) {
+        avengers.add(new Avenger(nombre, misionAsignada, nivelPeligro, pagoMensual));
     }
 
-    public void setAvengers(int id, String nombre, String misionAsignada, int nivelPeligro, double pagoMensual) {
-        avengers.add(new Avenger(id, nombre, misionAsignada, nivelPeligro, pagoMensual));
-    }
-
+    //Contructor String para que se vea mejor la lista en pantalla
     public String mostrarAvengers() {
         StringBuilder sb = new StringBuilder();
         for (Avenger avenger : avengers) {
@@ -26,10 +24,12 @@ public class Lista {
         return sb.toString();
     }
 
+    //Busqueda binaria por el id
     public Avenger buscarId(int id) {
         Avenger resultado = null;
 
-        Collections.sort(avengers);
+        //Aqui no agregamos el Collections porq se ordenan de manera automatica por id
+        //por el compareTo
 
         if(avengers.isEmpty()) {
             return null;
@@ -53,14 +53,15 @@ public class Lista {
         return resultado;
     }
 
-    public Avenger modificarDatos(Avenger avenger, String misionAsignada, int nivelPeligro, double pagoMensual) {
-        avenger.setMisionAsignada(misionAsignada);
-        avenger.setNivelPeligro(nivelPeligro);
-        avenger.setPagoMensual(pagoMensual);
-        avenger.setImpuestoGobierno(pagoMensual);
-        avenger.setImpuestoGobierno(pagoMensual);
-        avenger.setAporteFondoHeroes(pagoMensual);
-        return avenger;
+    //Cambiamos cada parametro del avenger buscado
+    public Avenger modificarDatos(Avenger a, String misionAsignada, int nivelPeligro, double pagoMensual) {
+        a.setMisionAsignada(misionAsignada);
+        a.setNivelPeligro(nivelPeligro);
+        a.setPagoMensual(pagoMensual);
+        a.setImpuestoGobierno(pagoMensual);
+        a.setAporteFondoHeroes(pagoMensual);
+        a.setPagoNetoRecibe(pagoMensual, a.getImpuestoGobierno(), a.getAporteFondoHeroes());
+        return a;
     }
 
 

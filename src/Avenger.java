@@ -1,6 +1,8 @@
 import javax.swing.*;
 
 public class Avenger implements Comparable<Avenger>{
+    //Contador de paquetes
+    private static int totalAvenger;
     private int id;
     private String nombre;
     private String misionAsignada;
@@ -8,32 +10,28 @@ public class Avenger implements Comparable<Avenger>{
     private double pagoMensual;
     private double aporteFondoHeroes;
     private double impuestoGobierno;
+    private double pagoNetoRecibe;
 
     //Constructor de cada Avenger
-    public Avenger(int id, String nombre, String misionAsignada, int nivelPeligro, double pagoMensual) {
-        this.id = id;
+    public Avenger(String nombre, String misionAsignada, int nivelPeligro, double pagoMensual) {
+        //Se guarda el id segun en que parte del contador este
+        this.id = ++totalAvenger;
         this.nombre = nombre;
         this.misionAsignada = misionAsignada;
         this.nivelPeligro = nivelPeligro;
         this.pagoMensual = pagoMensual;
         this.aporteFondoHeroes = calcularFondo(pagoMensual);
         this.impuestoGobierno = calcularImpuesto(pagoMensual);
+        this.pagoNetoRecibe = calcularPagoNeto(pagoMensual, aporteFondoHeroes, impuestoGobierno);
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getNombre() {
         return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public String getMisionAsignada() {
@@ -76,6 +74,11 @@ public class Avenger implements Comparable<Avenger>{
         this.impuestoGobierno = calcularImpuesto(pagoMensual);
     }
 
+
+    public void setPagoNetoRecibe(double pagoMensual, double aporteFondoHeroes, double impuestoGobierno) {
+        this.pagoNetoRecibe = calcularPagoNeto(pagoMensual, aporteFondoHeroes, impuestoGobierno);
+    }
+
     //Calcular pagomensual
     private double calcularImpuesto(double pagoMensual) {
         double resultado = 0;
@@ -98,21 +101,35 @@ public class Avenger implements Comparable<Avenger>{
         return resultado;
     }
 
+    //Calcular Pago Neto
+    private double calcularPagoNeto(double pagoMensual, double aporteFondoHeroes, double impuestoGobierno) {
+        return pagoMensual - aporteFondoHeroes - impuestoGobierno;
+    }
+
+
+    //Solo para motrar los datos organizados
     @Override
     public String toString() {
-        return "  Avenger  " +
-                "\nID: " + id +
+        return "  Avenger " + id +
                 "\nNombre: " + nombre +
                 "\nMisión Asignada: " + misionAsignada +
                 "\nNivel Peligro: " + nivelPeligro +
-                "\nPago Mensual: " + pagoMensual +
-                "\nAporte Fondo Heroes: " + aporteFondoHeroes +
-                "\nImpuesto Gobierno: " + impuestoGobierno +
+                "\n\n";
+    }
+
+    //Solo para mostrar el informe
+    public String mostrarInforme() {
+        return "  Informe Avenger " + id +
+                "\nNombre: " + nombre +
+                "\nPago mensual: $" + pagoMensual +
+                "\nAporte Fondo: $" + aporteFondoHeroes +
+                "\nImpuesto Gobierno: $" + impuestoGobierno +
+                "\nPago Neto: $" + pagoNetoRecibe +
                 "\n\n";
     }
 
     //Se va a ordenar por id
     public int compareTo(Avenger o) {
-        return Integer.compare(this.id, o.id);
+        return Integer.compare(id, o.id);
     }
 }
